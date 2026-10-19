@@ -649,4 +649,458 @@ const translations = {
 
 const mainPlatforms = [
   {name:'Facebook',icon:'📘',category:'social'},
-  {name:'Instagram
+  {name:'Instagram',icon:'📸',category:'social'},
+  {name:'WhatsApp',icon:'💬',category:'messaging'},
+  {name:'X',icon:'𝕏',category:'social'},
+  {name:'Telegram',icon:'✈️',category:'messaging'},
+  {name:'Snapchat',icon:'👻',category:'social'},
+  {name:'Likee',icon:'❤️',category:'video'},
+  {name:'TikTok',icon:'🎵',category:'video'},
+  {name:'VK',icon:'🔵',category:'social'},
+  {name:'LinkedIn',icon:'💼',category:'social'},
+  {name:'Threads',icon:'🧵',category:'social'},
+  {name:'Quora',icon:'❓',category:'social'},
+  {name:'Pinterest',icon:'📌',category:'social'},
+  {name:'YouTube',icon:'▶️',category:'video'},
+  {name:'RUTUBE',icon:'🎬',category:'video'}
+];
+
+const otherPlatforms = [
+  {name:'Reddit',icon:'🤖',category:'other'},
+  {name:'Discord',icon:'🎮',category:'other'},
+  {name:'Twitch',icon:'🟣',category:'other'},
+  {name:'Vimeo',icon:'🎞️',category:'other'},
+  {name:'Dailymotion',icon:'📺',category:'other'},
+  {name:'Rumble',icon:'🟢',category:'other'},
+  {name:'Kick',icon:'🟩',category:'other'},
+  {name:'Odysee',icon:'🌐',category:'other'},
+  {name:'Tumblr',icon:'🅣',category:'other'},
+  {name:'Mastodon',icon:'🐘',category:'other'},
+  {name:'Bluesky',icon:'🦋',category:'other'},
+  {name:'Medium',icon:'✍️',category:'other'},
+  {name:'WeChat',icon:'💚',category:'other'},
+  {name:'LINE',icon:'💚',category:'other'},
+  {name:'Viber',icon:'📞',category:'other'}
+];
+
+let currentFilter = 'all';
+
+function createPlatformCard(platform) {
+  const card = document.createElement('div');
+  card.className = 'platform-card';
+
+  const icon = document.createElement('div');
+  icon.className = 'platform-icon';
+  icon.textContent = platform.icon;
+
+  const info = document.createElement('div');
+  info.className = 'platform-info';
+
+  const name = document.createElement('strong');
+  name.textContent = platform.name;
+
+  const status = document.createElement('small');
+  status.textContent = translations[
+    document.documentElement.lang === 'ru' ? 'ru' : 'en'
+  ].statusUnavailable;
+
+  info.appendChild(name);
+  info.appendChild(status);
+  card.appendChild(icon);
+  card.appendChild(info);
+
+  return card;
+}
+
+function renderPlatformList(elementId, platforms) {
+  const container = document.getElementById(elementId);
+  if (!container) return;
+
+  container.replaceChildren();
+
+  platforms.forEach(platform => {
+    container.appendChild(createPlatformCard(platform));
+  });
+}
+
+function renderDashboardPlatforms() {
+  renderPlatformList('dashboardPlatforms', mainPlatforms.slice(0, 6));
+}
+
+function renderSocialPlatforms() {
+  const mainContainer = document.getElementById('mainPlatforms');
+  const otherContainer = document.getElementById('otherPlatforms');
+
+  if (mainContainer) mainContainer.replaceChildren();
+  if (otherContainer) otherContainer.replaceChildren();
+
+  const mainFiltered = mainPlatforms.filter(platform => {
+    return currentFilter === 'all' ||
+      currentFilter === 'other' ||
+      platform.category === currentFilter;
+  });
+
+  const otherFiltered = otherPlatforms.filter(platform => {
+    return currentFilter === 'all' || currentFilter === 'other';
+  });
+
+  if (mainContainer) {
+    mainFiltered.forEach(platform => {
+      mainContainer.appendChild(createPlatformCard(platform));
+    });
+  }
+
+  if (otherContainer) {
+    otherFiltered.forEach(platform => {
+      otherContainer.appendChild(createPlatformCard(platform));
+    });
+  }
+}
+
+function showPage(pageName) {
+  const validPages = [
+    'dashboard',
+    'platforms',
+    'offers',
+    'earnings',
+    'withdraw',
+    'account'
+  ];
+
+  if (!validPages.includes(pageName)) return;
+
+  document.querySelectorAll('.page').forEach(page => {
+    page.classList.toggle('active', page.id === 'page-' + pageName);
+  });
+
+  document.querySelectorAll('[data-page]').forEach(button => {
+    button.classList.toggle(
+      'active',
+      button.dataset.page === pageName
+    );
+  });
+
+  const language = translations[
+    document.documentElement.lang === 'ru' ? 'ru' : 'en'
+  ];
+
+  const titleKeys = {
+    dashboard: 'titleDashboard',
+    platforms: 'titlePlatforms',
+    offers: 'titleOffers',
+    earnings: 'titleEarnings',
+    withdraw: 'titleWithdraw',
+    account: 'titleAccount'
+  };
+
+  const title = document.getElementById('pageTitle');
+  if (title) title.textContent = language[titleKeys[pageName]];
+
+  window.scrollTo({top: 0, behavior: 'auto'});
+}
+
+document.querySelectorAll('[data-page]').forEach(button => {
+  button.addEventListener('click', () => {
+    showPage(button.dataset.page);
+  });
+});
+
+document.querySelectorAll('[data-go]').forEach(button => {
+  button.addEventListener('click', () => {
+    showPage(button.dataset.go);
+  });
+});
+
+document.querySelectorAll('[data-filter]').forEach(button => {
+  button.addEventListener('click', () => {
+    currentFilter = button.dataset.filter;
+
+    document.querySelectorAll('[data-filter]').forEach(filterButton => {
+      filterButton.classList.toggle(
+        'active',
+        filterButton === button
+      );
+    });
+
+    renderSocialPlatforms();
+  });
+});
+
+function applyLanguage(languageCode) {
+  const language = translations[languageCode] || translations.en;
+
+  document.documentElement.lang = languageCode;
+
+  document.querySelectorAll('[data-i18n]').forEach(element => {
+    const key = element.dataset.i18n;
+    if (language[key] === undefined) return;
+
+    if (key === 'sidebarNote') {
+      element.innerHTML = language[key];
+    } else {
+      element.textContent = language[key];
+    }
+  });
+
+  const activePage = document.querySelector('.page.active');
+  if (activePage) {
+    showPage(activePage.id.replace('page-', ''));
+  }
+
+  renderDashboardPlatforms();
+  renderSocialPlatforms();
+}
+
+const languageSelect = document.getElementById('languageSelect');
+
+if (languageSelect) {
+  languageSelect.addEventListener('change', () => {
+    applyLanguage(languageSelect.value);
+  });
+}
+
+function showToast(message) {
+  const toast = document.getElementById('toast');
+  if (!toast) return;
+
+  toast.textContent = message;
+  toast.classList.add('show');
+
+  clearTimeout(showToast.timer);
+  showToast.timer = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 3500);
+}
+
+function showAuthTab(tab) {
+  document.getElementById('loginForm').classList.toggle(
+    'active',
+    tab === 'login'
+  );
+
+  document.getElementById('registerForm').classList.toggle(
+    'active',
+    tab === 'register'
+  );
+
+  document.getElementById('showLogin').classList.toggle(
+    'secondary',
+    tab !== 'login'
+  );
+
+  document.getElementById('showRegister').classList.toggle(
+    'secondary',
+    tab !== 'register'
+  );
+}
+
+document.getElementById('showLogin').addEventListener('click', () => {
+  showAuthTab('login');
+});
+
+document.getElementById('showRegister').addEventListener('click', () => {
+  showAuthTab('register');
+});
+
+function formatMoney(value) {
+  const number = Number(value);
+  return '$' + (Number.isFinite(number) ? number : 0).toFixed(2);
+}
+
+function updateUserInterface(user) {
+  const authCard = document.getElementById('authCard');
+  const loggedInCard = document.getElementById('loggedInCard');
+  const userPill = document.getElementById('userPill');
+
+  const balance = Number(user.balance) || 0;
+  const earned = Number(
+    user.total_earned ?? user.earned
+  ) || 0;
+
+  document.getElementById('balanceValue').textContent = formatMoney(balance);
+  document.getElementById('earnedValue').textContent = formatMoney(earned);
+  document.getElementById('earningsBalance').textContent = formatMoney(balance);
+  document.getElementById('earningsTotal').textContent = formatMoney(earned);
+
+  document.getElementById('detailUsername').textContent = user.username || '—';
+  document.getElementById('detailEmail').textContent = user.email || '—';
+  document.getElementById('detailPlan').textContent = user.plan || 'free';
+  document.getElementById('detailBalance').textContent = formatMoney(balance);
+  document.getElementById('detailEarned').textContent = formatMoney(earned);
+
+  authCard.hidden = Boolean(user.id);
+  loggedInCard.hidden = !user.id;
+
+  const language = translations[
+    document.documentElement.lang === 'ru' ? 'ru' : 'en'
+  ];
+
+  userPill.textContent = user.id
+    ? `${user.username} · ${language.loggedIn}`
+    : language.guest;
+}
+
+async function apiRequest(path, options = {}) {
+  const response = await fetch(API_BASE + path, {
+    ...options,
+    credentials: 'same-origin',
+    headers: {
+      'Content-Type': 'application/json',
+      ...(options.headers || {})
+    }
+  });
+
+  let data = {};
+
+  try {
+    data = await response.json();
+  } catch (_) {
+    data = {};
+  }
+
+  if (!response.ok) {
+    const error = new Error(data.error || data.message || 'request_failed');
+    error.status = response.status;
+    throw error;
+  }
+
+  return data;
+}
+
+function getErrorMessage(error, fallbackKey) {
+  const language = translations[
+    document.documentElement.lang === 'ru' ? 'ru' : 'en'
+  ];
+
+  if (error.status === 409) return language.userExists;
+
+  if (error.status === 401 || error.status === 403) {
+    return language.invalidCredentials;
+  }
+
+  return language[fallbackKey] || language.requestFailed;
+}
+
+document.getElementById('registerForm').addEventListener('submit', async event => {
+  event.preventDefault();
+
+  const username = document.getElementById('registerUsername').value.trim();
+  const email = document.getElementById('registerEmail').value.trim();
+  const password = document.getElementById('registerPassword').value;
+
+  const language = translations[
+    document.documentElement.lang === 'ru' ? 'ru' : 'en'
+  ];
+
+  if (!username || !email || !password) {
+    showToast(language.missingFields);
+    return;
+  }
+
+  if (!/^[A-Za-z0-9_]{3,24}$/.test(username)) {
+    showToast(language.invalidUsername);
+    return;
+  }
+
+  if (!document.getElementById('registerEmail').checkValidity()) {
+    showToast(language.invalidEmail);
+    return;
+  }
+
+  try {
+    const result = await apiRequest('/api/register', {
+      method: 'POST',
+      body: JSON.stringify({username, email, password})
+    });
+
+    if (result.user) {
+      updateUserInterface(result.user);
+    } else {
+      await loadCurrentUser();
+    }
+
+    showToast(language.successRegister);
+    event.target.reset();
+  } catch (error) {
+    showToast(getErrorMessage(error, 'registeredError'));
+  }
+});
+
+document.getElementById('loginForm').addEventListener('submit', async event => {
+  event.preventDefault();
+
+  const identifier = document.getElementById('loginIdentifier').value.trim();
+  const password = document.getElementById('loginPassword').value;
+
+  const language = translations[
+    document.documentElement.lang === 'ru' ? 'ru' : 'en'
+  ];
+
+  if (!identifier || !password) {
+    showToast(language.missingFields);
+    return;
+  }
+
+  try {
+    const result = await apiRequest('/api/login', {
+      method: 'POST',
+      body: JSON.stringify({identifier, password})
+    });
+
+    if (result.user) {
+      updateUserInterface(result.user);
+    } else {
+      await loadCurrentUser();
+    }
+
+    showToast(language.successLogin);
+    event.target.reset();
+  } catch (error) {
+    showToast(getErrorMessage(error, 'loginError'));
+  }
+});
+
+async function loadCurrentUser() {
+  try {
+    const result = await apiRequest('/api/me', {
+      method: 'GET',
+      headers: {}
+    });
+
+    updateUserInterface(result.user || result);
+  } catch (error) {
+    updateUserInterface({id: null});
+  }
+}
+
+document.getElementById('logoutButton').addEventListener('click', async () => {
+  const language = translations[
+    document.documentElement.lang === 'ru' ? 'ru' : 'en'
+  ];
+
+  try {
+    await apiRequest('/api/logout', {
+      method: 'POST',
+      body: JSON.stringify({})
+    });
+
+    updateUserInterface({id: null});
+    showToast(language.successLogout);
+    showAuthTab('login');
+  } catch (_) {
+    showToast(language.requestFailed);
+  }
+});
+
+function initializeVideoCash() {
+  renderDashboardPlatforms();
+  renderSocialPlatforms();
+  applyLanguage(languageSelect ? languageSelect.value : 'en');
+  updateUserInterface({id: null});
+  loadCurrentUser();
+}
+
+initializeVideoCash();
+</script>
+</body>
+</html>
