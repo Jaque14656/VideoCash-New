@@ -161,11 +161,14 @@ function isValidEmail(email) {
   );
 }
 
+// Password policy:
+// No minimum length.
+// Maximum 10 characters.
+// Any characters are allowed.
 function validPassword(password) {
   return (
     typeof password === "string" &&
-    password.length >= 12 &&
-    password.length <= 128
+    password.length <= 10
   );
 }
 
@@ -214,7 +217,6 @@ async function createSession(env, userId) {
   const now = Math.floor(Date.now() / 1000);
   const expiresAt = now + SESSION_DURATION;
 
-  // Only the hash of the session token is stored in the database.
   const digest = await crypto.subtle.digest(
     "SHA-256",
     new TextEncoder().encode(token)
@@ -376,7 +378,7 @@ export default {
         if (!validPassword(password)) {
           return json({
             success: false,
-            error: "Password must be 12-128 characters"
+            error: "Password must not exceed 10 characters"
           }, 400);
         }
 
@@ -440,7 +442,7 @@ export default {
         if (
           !identifier ||
           typeof password !== "string" ||
-          password.length > 128
+          password.length > 10
         ) {
           return json({
             success: false,
@@ -534,7 +536,6 @@ export default {
       }, 404);
 
     } catch (error) {
-      // Do not expose internal database errors or secrets to visitors.
       console.error("VideoCash-New request failed:", error?.message);
 
       return json({
