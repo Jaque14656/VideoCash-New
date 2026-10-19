@@ -2,1301 +2,651 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#080b14">
-<title>VideoCash</title>
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VideoCash-New</title>
 <style>
 :root {
-  --bg: #080b14;
-  --panel: #101625;
-  --panel2: #151d2e;
-  --border: #263149;
-  --text: #f4f7ff;
-  --muted: #929db5;
-  --primary: #795cff;
-  --primary2: #a18cff;
-  --green: #35d49a;
-  --red: #ff697e;
+  --bg:#0b1020;
+  --panel:#121a2d;
+  --panel2:#18233a;
+  --border:#273550;
+  --text:#f1f5f9;
+  --muted:#9aaac2;
+  --accent:#36d399;
+  --blue:#60a5fa;
+  --danger:#fb7185;
+  --radius:16px;
 }
-
-* { box-sizing: border-box; }
-
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: var(--bg);
-  color: var(--text);
-  font-family: Arial, Helvetica, sans-serif;
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
 }
-
-button, input, select { font: inherit; }
-button { cursor: pointer; }
-button:disabled { opacity: .5; cursor: not-allowed; }
-
-.layout { display: flex; min-height: 100vh; }
-
-.sidebar {
-  width: 245px;
-  flex-shrink: 0;
-  padding: 24px 16px;
-  background: #0c101d;
-  border-right: 1px solid var(--border);
-  position: fixed;
-  inset: 0 auto 0 0;
-  overflow-y: auto;
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:disabled{cursor:not-allowed;opacity:.5}
+.app{min-height:100vh;display:flex}
+.sidebar{
+  width:245px;background:#0e1628;border-right:1px solid var(--border);
+  padding:24px 16px;display:flex;flex-direction:column;gap:25px;
 }
-
-.brand {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 23px;
-  font-weight: 800;
-  padding: 4px 10px 30px;
+.brand{font-size:25px;font-weight:800;letter-spacing:-.8px}
+.brand span{color:var(--accent)}
+.brand small{display:block;color:var(--muted);font-size:11px;letter-spacing:1px;margin-top:6px}
+.nav{display:grid;gap:8px}
+.nav button,.mobile-nav button{
+  color:var(--muted);background:transparent;border:0;text-align:left;
+  padding:13px 14px;border-radius:11px;font-weight:600;
 }
-
-.brand-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 12px;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(135deg, var(--primary), #3b9dff);
+.nav button:hover,.nav button.active,.mobile-nav button.active{
+  background:var(--panel2);color:var(--accent)
 }
-
-.brand span { color: var(--primary2); }
-
-.nav-label {
-  color: var(--muted);
-  font-size: 11px;
-  letter-spacing: 1.5px;
-  margin: 18px 12px 9px;
+.sidebar-bottom{margin-top:auto;color:var(--muted);font-size:12px;line-height:1.7}
+.main{flex:1;min-width:0;padding:24px 28px 100px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:28px}
+.topbar h1{font-size:26px;margin:0}
+.top-actions{display:flex;align-items:center;gap:10px}
+.lang-select{
+  background:var(--panel);color:var(--text);border:1px solid var(--border);
+  padding:10px;border-radius:10px
 }
-
-.nav-btn {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: 100%;
-  text-align: left;
-  padding: 13px 14px;
-  margin: 4px 0;
-  border: 1px solid transparent;
-  border-radius: 11px;
-  background: transparent;
-  color: #aab4ca;
+.user-pill{padding:10px 13px;border:1px solid var(--border);border-radius:12px;color:var(--muted);font-size:13px}
+.page{display:none}
+.page.active{display:block}
+.welcome{
+  background:linear-gradient(120deg,#142d35,#18233e 70%);
+  border:1px solid #2a4b50;border-radius:20px;padding:27px;margin-bottom:22px
 }
-
-.nav-btn:hover, .nav-btn.active {
-  background: #1a1d37;
-  border-color: #342d64;
-  color: white;
+.welcome h2{font-size:25px;margin:0 0 10px}
+.welcome p{color:#c3d2e2;line-height:1.7;margin:0;max-width:750px}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:22px}
+.stat,.card,.platform-section{
+  background:var(--panel);border:1px solid var(--border);border-radius:var(--radius)
 }
-
-.nav-icon { width: 22px; text-align: center; font-size: 18px; }
-
-.sidebar-bottom {
-  margin-top: 30px;
-  border-top: 1px solid var(--border);
-  padding: 18px 8px;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.8;
+.stat{padding:20px}
+.stat-label{color:var(--muted);font-size:13px;margin-bottom:12px}
+.stat-value{font-size:25px;font-weight:800;overflow-wrap:anywhere}
+.stat-note{font-size:12px;color:var(--muted);margin-top:8px}
+.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:27px 0 15px}
+.section-head h2,.card h2{font-size:18px;margin:0}
+.section-head p{font-size:13px;color:var(--muted);margin:7px 0 0;line-height:1.5}
+.link-btn{border:0;background:transparent;color:var(--accent);font-weight:700;padding:8px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+.platform-card{
+  background:var(--panel);border:1px solid var(--border);border-radius:14px;
+  padding:16px;display:flex;align-items:center;gap:12px;min-width:0
 }
-
-.main {
-  margin-left: 245px;
-  width: calc(100% - 245px);
-  min-width: 0;
+.platform-icon{
+  width:43px;height:43px;border-radius:12px;background:var(--panel2);
+  display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0
 }
-
-.topbar {
-  height: 76px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 30px;
-  background: #080b14;
-  position: sticky;
-  top: 0;
-  z-index: 10;
+.platform-info{min-width:0;flex:1}
+.platform-info strong{display:block;font-size:14px;overflow-wrap:anywhere}
+.platform-info small{display:block;color:var(--muted);font-size:11px;margin-top:6px}
+.badge{
+  display:inline-block;background:#283449;color:#b8c5d8;padding:5px 7px;
+  border-radius:7px;font-size:10px;white-space:nowrap
 }
-
-.topbar-title { font-size: 19px; font-weight: 700; }
-.top-actions { display: flex; align-items: center; gap: 12px; }
-
-.lang-select, .secondary-btn {
-  color: var(--text);
-  background: var(--panel2);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 10px 12px;
+.badge.pending{color:#fbbf24;background:#3a301d}
+.badge.ready{color:var(--accent);background:#15372f}
+.card{padding:22px;margin-bottom:17px}
+.card p{color:var(--muted);line-height:1.7;font-size:14px}
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0 20px}
+.filter{
+  background:var(--panel);border:1px solid var(--border);color:var(--muted);
+  padding:9px 13px;border-radius:10px
 }
-
-.avatar {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: #29234d;
-  color: #c7baff;
-  display: grid;
-  place-items: center;
-  font-weight: bold;
+.filter.active{color:var(--accent);border-color:var(--accent)}
+.platform-section{padding:19px;margin-bottom:20px}
+.platform-section .section-head{margin:0 0 15px}
+.empty{
+  padding:28px 18px;text-align:center;background:var(--panel);
+  border:1px dashed var(--border);border-radius:14px;color:var(--muted);line-height:1.7
 }
-
-.content {
-  padding: 30px;
-  max-width: 1500px;
-  margin: auto;
+.offer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.offer-card{background:var(--panel);border:1px solid var(--border);border-radius:15px;padding:20px}
+.offer-top{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.offer-top .platform-icon{font-size:23px}
+.offer-card h3{margin:0;font-size:16px}
+.offer-card p{color:var(--muted);font-size:13px;line-height:1.7}
+.btn{
+  padding:11px 15px;border:0;border-radius:10px;background:var(--accent);
+  color:#06251c;font-weight:800
 }
-
-.page { display: none; }
-.page.active { display: block; }
-.hidden { display: none !important; }
-
-.welcome {
-  padding: 29px;
-  border-radius: 20px;
-  background: linear-gradient(120deg, #201b49, #131d35 70%, #102c36);
-  border: 1px solid #34315d;
-  margin-bottom: 24px;
+.btn.secondary{background:var(--panel2);color:var(--text);border:1px solid var(--border)}
+.btn.danger{background:#4a202d;color:#fecdd3}
+.btn.full{width:100%}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.field{display:grid;gap:8px;margin-bottom:14px}
+.field label{font-size:13px;color:var(--muted)}
+.field input,.field select{
+  width:100%;padding:13px;border:1px solid var(--border);border-radius:10px;
+  background:#0d1526;color:var(--text);outline:none
 }
-
-.welcome h1 { font-size: 29px; margin: 0 0 10px; }
-.welcome p { color: #c0c8dc; line-height: 1.7; margin: 0; }
-
-.eyebrow {
-  color: #b4a4ff;
-  font-size: 11px;
-  letter-spacing: 1.7px;
-  font-weight: bold;
-  margin-bottom: 12px;
+.field input:focus{border-color:var(--accent)}
+.helper{font-size:12px;color:var(--muted);line-height:1.6}
+.alert{padding:13px 15px;border-radius:10px;margin:12px 0;font-size:13px;line-height:1.6}
+.alert.info{background:#172a42;color:#bfdbfe;border:1px solid #294a72}
+.alert.warning{background:#382d19;color:#fde68a;border:1px solid #62502a}
+.alert.error{background:#3c202a;color:#fecdd3;border:1px solid #693240}
+.alert.success{background:#14342b;color:#bbf7d0;border:1px solid #285c4b}
+.auth-layout{max-width:600px;margin:auto}
+.auth-tabs{display:flex;gap:8px;margin-bottom:20px}
+.auth-tabs button{flex:1}
+.auth-form{display:none}
+.auth-form.active{display:block}
+.user-details{display:grid;grid-template-columns:150px 1fr;gap:12px;font-size:14px}
+.user-details div:nth-child(odd){color:var(--muted)}
+.toast{
+  position:fixed;right:20px;bottom:20px;z-index:99;max-width:360px;
+  padding:14px 18px;background:#17243a;border:1px solid var(--border);
+  border-radius:12px;box-shadow:0 10px 35px #0005;display:none;line-height:1.5
 }
-
-.welcome-actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 20px;
+.toast.show{display:block}
+.mobile-nav{display:none}
+.small-muted{color:var(--muted);font-size:12px;line-height:1.7}
+hr{border:0;border-top:1px solid var(--border);margin:20px 0}
+@media(max-width:1050px){
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-
-.grid { display: grid; gap: 18px; }
-
-.stats {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin-bottom: 24px;
-}
-
-.card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 22px;
-  min-width: 0;
-}
-
-.stat-label { color: var(--muted); font-size: 13px; margin-bottom: 15px; }
-.stat-value { font-size: 29px; font-weight: 800; overflow-wrap: anywhere; }
-.stat-note { font-size: 12px; color: var(--muted); margin-top: 12px; }
-
-.section-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin: 30px 0 16px;
-}
-
-.section-heading h2 { font-size: 19px; margin: 0; }
-.section-heading p { color: var(--muted); font-size: 13px; margin: 7px 0 0; }
-
-.platform-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-
-.platform-card {
-  background: var(--panel);
-  border: 1px solid var(--border);
-  border-radius: 15px;
-  padding: 18px;
-}
-
-.platform-top { display: flex; align-items: center; gap: 11px; }
-
-.platform-icon {
-  width: 42px;
-  height: 42px;
-  flex-shrink: 0;
-  display: grid;
-  place-items: center;
-  border-radius: 12px;
-  background: var(--panel2);
-  font-size: 21px;
-}
-
-.platform-name { font-weight: bold; font-size: 14px; }
-.platform-description { color: var(--muted); font-size: 12px; line-height: 1.5; margin: 14px 0; }
-
-.tag {
-  display: inline-block;
-  font-size: 10px;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 5px 8px;
-  color: var(--muted);
-}
-
-.tag.pending { color: #f3c87b; border-color: #5a4828; }
-
-.primary-btn {
-  border: 0;
-  background: linear-gradient(135deg, var(--primary), #5c7cff);
-  color: white;
-  border-radius: 10px;
-  padding: 12px 16px;
-  font-weight: bold;
-}
-
-.primary-btn.full { width: 100%; }
-.secondary-btn:hover { border-color: var(--primary); }
-
-.danger-btn {
-  background: #351c2a;
-  color: #ff9aaa;
-  border: 1px solid #663042;
-  border-radius: 10px;
-  padding: 11px 15px;
-}
-
-.notice {
-  background: #171b30;
-  border: 1px solid #38365f;
-  color: #c6c4ef;
-  padding: 15px 17px;
-  border-radius: 12px;
-  font-size: 13px;
-  line-height: 1.7;
-  margin-bottom: 20px;
-}
-
-.notice.warning { background: #292316; border-color: #5b4b29; color: #f3dba2; }
-.notice.success { background: #11271f; border-color: #28533f; color: #a3ebc8; }
-.notice.error { background: #301821; border-color: #663040; color: #ffb5c0; }
-
-.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
-
-.filter-btn {
-  background: var(--panel);
-  color: var(--muted);
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 9px 14px;
-}
-
-.filter-btn.active { background: #272044; color: white; border-color: #6b56c5; }
-
-.form-card { max-width: 520px; }
-.form-card h2 { margin-top: 0; }
-
-.form-description {
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.7;
-  margin-bottom: 24px;
-}
-
-.form-group { margin-bottom: 18px; }
-.form-group label { display: block; font-size: 13px; margin-bottom: 9px; }
-
-.form-group input, .form-group select {
-  width: 100%;
-  padding: 13px 14px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: #0b101c;
-  color: white;
-  outline: none;
-}
-
-.form-group input:focus, .form-group select:focus { border-color: var(--primary); }
-.form-help { font-size: 12px; color: var(--muted); line-height: 1.6; margin-top: 7px; }
-
-.auth-switch { text-align: center; color: var(--muted); font-size: 13px; margin-top: 20px; }
-
-.text-btn {
-  background: none;
-  border: 0;
-  color: #b3a3ff;
-  font-weight: bold;
-  padding: 5px;
-}
-
-.profile-row {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  padding: 17px 0;
-  border-bottom: 1px solid var(--border);
-}
-
-.profile-row:last-child { border-bottom: 0; }
-.profile-label { color: var(--muted); font-size: 13px; margin-bottom: 6px; }
-.profile-value { font-size: 14px; overflow-wrap: anywhere; }
-
-.empty-state { text-align: center; padding: 35px 15px; color: var(--muted); line-height: 1.8; }
-
-.footer {
-  border-top: 1px solid var(--border);
-  padding: 20px 30px;
-  color: var(--muted);
-  font-size: 12px;
-  display: flex;
-  justify-content: space-between;
-  gap: 15px;
-  flex-wrap: wrap;
-}
-
-.mobile-brand, .mobile-nav { display: none; }
-
-@media (max-width: 1150px) {
-  .platform-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
-
-@media (max-width: 850px) {
-  .sidebar { display: none; }
-  .main { margin-left: 0; width: 100%; }
-  .topbar { padding: 0 17px; height: 68px; }
-  .content { padding: 20px 16px 95px; }
-  .mobile-brand { display: flex; align-items: center; gap: 8px; font-weight: bold; }
-  .mobile-brand .brand-icon { width: 32px; height: 32px; }
-  .topbar-title { display: none; }
-  .mobile-nav {
-    display: flex;
-    position: fixed;
-    z-index: 20;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: #0c101d;
-    border-top: 1px solid var(--border);
-    justify-content: space-around;
-    padding: 7px 3px;
+@media(max-width:720px){
+  .app{display:block}
+  .sidebar{display:none}
+  .main{padding:18px 14px 100px}
+  .topbar{align-items:flex-start}
+  .topbar h1{font-size:21px}
+  .user-pill{display:none}
+  .welcome{padding:20px}
+  .welcome h2{font-size:22px}
+  .stats{gap:10px}
+  .stat{padding:15px}
+  .stat-value{font-size:21px}
+  .grid{grid-template-columns:1fr}
+  .offer-grid{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr;gap:0}
+  .platform-card{padding:13px}
+  .platform-section{padding:13px}
+  .mobile-nav{
+    display:flex;position:fixed;bottom:0;left:0;right:0;z-index:20;
+    background:#0e1628;border-top:1px solid var(--border);
+    justify-content:space-around;padding:8px 3px calc(8px + env(safe-area-inset-bottom));
   }
-  .mobile-nav button {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    color: var(--muted);
-    background: none;
-    border: 0;
-    padding: 5px;
-    font-size: 10px;
-  }
-  .mobile-nav button span:first-child { font-size: 19px; }
-  .mobile-nav button.active { color: #b8a9ff; }
-  .stats { grid-template-columns: 1fr; }
-  .stat-value { font-size: 25px; }
-  .platform-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .welcome { padding: 22px; }
-  .welcome h1 { font-size: 24px; }
-}
-
-@media (max-width: 390px) {
-  .platform-grid { grid-template-columns: 1fr; }
-  .lang-select { padding: 9px 6px; font-size: 12px; }
-  .top-actions { gap: 7px; }
+  .mobile-nav button{padding:10px 8px;font-size:11px;text-align:center}
+  .user-details{grid-template-columns:115px 1fr}
 }
 </style>
 </head>
-
 <body>
-<div class="layout">
-
-<aside class="sidebar">
-  <div class="brand">
-    <div class="brand-icon">▶</div>
-    <div>Video<span>Cash</span></div>
-  </div>
-
-  <div class="nav-label" data-i18n="menu">MENU</div>
-
-  <button class="nav-btn active" data-page="dashboard" onclick="showPage('dashboard')">
-    <span class="nav-icon">▦</span><span data-i18n="dashboard">Dashboard</span>
-  </button>
-
-  <button class="nav-btn" data-page="platforms" onclick="showPage('platforms')">
-    <span class="nav-icon">◎</span><span data-i18n="platforms">Social platforms</span>
-  </button>
-
-  <button class="nav-btn" data-page="offers" onclick="showPage('offers')">
-    <span class="nav-icon">✦</span><span data-i18n="offers">Offers</span>
-  </button>
-
-  <button class="nav-btn" data-page="earnings" onclick="showPage('earnings')">
-    <span class="nav-icon">↗</span><span data-i18n="earnings">Earnings</span>
-  </button>
-
-  <button class="nav-btn" data-page="withdraw" onclick="showPage('withdraw')">
-    <span class="nav-icon">⇧</span><span data-i18n="withdraw">Withdraw</span>
-  </button>
-
-  <div class="nav-label" data-i18n="account">ACCOUNT</div>
-
-  <button class="nav-btn" data-page="account" onclick="showPage('account')">
-    <span class="nav-icon">♙</span><span data-i18n="myAccount">My account</span>
-  </button>
-
-  <div class="sidebar-bottom">
-    <div>VideoCash © 2026</div>
-    <div data-i18n="secureAccount">Secure account access</div>
-  </div>
-</aside>
-
-<main class="main">
-
-<header class="topbar">
-  <div class="mobile-brand">
-    <div class="brand-icon">▶</div><span>VideoCash</span>
-  </div>
-
-  <div class="topbar-title" id="pageTitle">Dashboard</div>
-
-  <div class="top-actions">
-    <select class="lang-select" id="languageSelect" aria-label="Language">
-      <option value="en">🇬🇧 English</option>
-      <option value="ru">🇷🇺 Русский</option>
-    </select>
-    <div class="avatar" id="avatar">?</div>
-  </div>
-</header>
-
-<div class="content">
-
-<section class="page active" id="page-dashboard">
-
-  <div class="welcome">
-    <div class="eyebrow" data-i18n="memberArea">MEMBER AREA</div>
-
-    <h1>
-      <span data-i18n="welcome">Welcome to VideoCash</span>
-      <span id="welcomeName"></span>
-    </h1>
-
-    <p data-i18n="welcomeText">
-      Manage your account, explore social platforms and check available opportunities.
-    </p>
-
-    <!-- أزرار التسجيل والدخول ظاهرة مباشرة -->
-    <div class="welcome-actions" id="welcomeActions">
-      <button class="primary-btn" type="button" onclick="showAuthForm('register')" data-i18n="createAccount">
-        Create account
-      </button>
-
-      <button class="secondary-btn" type="button" onclick="showAuthForm('login')" data-i18n="loginButton">
-        Sign in
-      </button>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">Video<span>Cash</span><small>NEW REWARDS PLATFORM</small></div>
+    <nav class="nav">
+      <button class="active" data-page="dashboard" data-i18n="navDashboard">⌂ Dashboard</button>
+      <button data-page="platforms" data-i18n="navTasks">◎ Social Tasks</button>
+      <button data-page="offers" data-i18n="navOffers">▣ Ads & Offers</button>
+      <button data-page="earnings" data-i18n="navEarnings">↗ My Earnings</button>
+      <button data-page="withdraw" data-i18n="navWithdraw">⇩ Withdraw</button>
+      <button data-page="account" data-i18n="navAccount">♙ Account</button>
+    </nav>
+    <div class="sidebar-bottom" data-i18n="sidebarNote">
+      Earn only from verified tasks and real available offers.<br>
+      Rewards depend on actual platform revenue.
     </div>
-  </div>
+  </aside>
 
-  <div id="dashboardMessage" class="notice">
-    Please log in or create an account to access your personal dashboard.
-  </div>
-
-  <div class="grid stats">
-    <div class="card">
-      <div class="stat-label" data-i18n="availableBalance">Available balance</div>
-      <div class="stat-value" id="balanceValue">$0.00</div>
-      <div class="stat-note" data-i18n="balanceNote">Based on confirmed account data</div>
-    </div>
-
-    <div class="card">
-      <div class="stat-label" data-i18n="totalEarned">Total earned</div>
-      <div class="stat-value" id="earnedValue">$0.00</div>
-      <div class="stat-note" data-i18n="earnedNote">Confirmed earnings only</div>
-    </div>
-
-    <div class="card">
-      <div class="stat-label" data-i18n="completedViews">Completed views</div>
-      <div class="stat-value" id="viewsValue">0</div>
-      <div class="stat-note" data-i18n="viewsNote">Recorded by the system</div>
-    </div>
-  </div>
-
-  <div class="section-heading">
-    <div>
-      <h2 data-i18n="explorePlatforms">Explore platforms</h2>
-      <p data-i18n="exploreText">Browse supported social platforms.</p>
-    </div>
-    <button class="secondary-btn" onclick="showPage('platforms')" data-i18n="viewAll">View all</button>
-  </div>
-
-  <div class="grid platform-grid" id="dashboardPlatforms"></div>
-</section>
-
-<section class="page" id="page-platforms">
-  <div class="section-heading" style="margin-top:0">
-    <div>
-      <h2 data-i18n="socialTitle">Social platforms</h2>
-      <p data-i18n="socialText">Choose a platform to explore its available features.</p>
-    </div>
-  </div>
-
-  <div class="notice" data-i18n="platformNotice">
-    Platform listings do not guarantee rewards. Only verified, approved tasks can generate earnings.
-  </div>
-
-  <div class="filters">
-    <button class="filter-btn active" onclick="filterPlatforms('all',this)" data-i18n="allPlatforms">All platforms</button>
-    <button class="filter-btn" onclick="filterPlatforms('video',this)" data-i18n="videoPlatforms">Video</button>
-    <button class="filter-btn" onclick="filterPlatforms('social',this)" data-i18n="socialCategory">Social</button>
-    <button class="filter-btn" onclick="filterPlatforms('messaging',this)" data-i18n="messaging">Messaging</button>
-  </div>
-
-  <div class="grid platform-grid" id="allPlatforms"></div>
-</section>
-
-<section class="page" id="page-offers">
-  <div class="section-heading" style="margin-top:0">
-    <div>
-      <h2 data-i18n="offersTitle">Available offers</h2>
-      <p data-i18n="offersText">Approved third-party offers will appear here when integration is ready.</p>
-    </div>
-  </div>
-
-  <div class="notice warning" data-i18n="offersNotice">
-    Offerwall integration is not yet confirmed. No offer is currently advertised as payable.
-  </div>
-
-  <div class="card empty-state">
-    <div style="font-size:35px;margin-bottom:12px">✦</div>
-    <h3 data-i18n="noOffers">No verified offers available</h3>
-    <p data-i18n="noOffersText">
-      This section will be updated after the offer provider has approved VideoCash and the integration has been tested.
-    </p>
-  </div>
-</section>
-
-<section class="page" id="page-earnings">
-  <div class="section-heading" style="margin-top:0">
-    <div>
-      <h2 data-i18n="earningsTitle">Earnings history</h2>
-      <p data-i18n="earningsText">Review the earnings recorded for your account.</p>
-    </div>
-  </div>
-
-  <div class="grid stats">
-    <div class="card">
-      <div class="stat-label" data-i18n="totalEarned">Total earned</div>
-      <div class="stat-value" id="earningsTotal">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="stat-label" data-i18n="availableBalance">Available balance</div>
-      <div class="stat-value" id="earningsBalance">$0.00</div>
-    </div>
-
-    <div class="card">
-      <div class="stat-label" data-i18n="completedViews">Completed views</div>
-      <div class="stat-value" id="earningsViews">0</div>
-    </div>
-  </div>
-
-  <div class="card empty-state">
-    <div style="font-size:32px">↗</div>
-    <h3 data-i18n="noTransactions">No transaction history available</h3>
-    <p data-i18n="noTransactionsText">
-      Confirmed transactions will be displayed here when the relevant system is implemented.
-    </p>
-  </div>
-</section>
-
-<section class="page" id="page-withdraw">
-  <div class="section-heading" style="margin-top:0">
-    <div>
-      <h2 data-i18n="withdrawTitle">Withdraw funds</h2>
-      <p data-i18n="withdrawText">Withdrawal functionality is not available yet.</p>
-    </div>
-  </div>
-
-  <div class="notice warning" data-i18n="withdrawNotice">
-    Withdrawals are disabled until real revenue, payment verification, security checks and the payout system are ready.
-  </div>
-
-  <div class="card form-card">
-    <h2 data-i18n="withdrawRequest">Withdrawal request</h2>
-
-    <div class="form-group">
-      <label data-i18n="withdrawAmount">Amount (USD)</label>
-      <input type="number" min="0" step="0.01" placeholder="0.00" disabled>
-    </div>
-
-    <div class="form-group">
-      <label data-i18n="paymentNetwork">Payment network</label>
-      <select disabled><option>USDT — TRC20</option></select>
-    </div>
-
-    <div class="form-group">
-      <label data-i18n="walletAddress">Wallet address</label>
-      <input type="text" placeholder="TRC20 address" disabled>
-    </div>
-
-    <button class="primary-btn full" disabled data-i18n="withdrawDisabled">
-      Withdrawals unavailable
-    </button>
-  </div>
-</section>
-
-<section class="page" id="page-account">
-  <div class="section-heading" style="margin-top:0">
-    <div>
-      <h2 data-i18n="accountTitle">My account</h2>
-      <p data-i18n="accountText">Register or sign in to access your account.</p>
-    </div>
-  </div>
-
-  <div id="accountStatus" class="notice">You are not signed in.</div>
-
-  <div class="card form-card" id="loginCard">
-    <h2 data-i18n="loginTitle">Sign in</h2>
-
-    <p class="form-description" data-i18n="loginDescription">
-      Sign in with your registered email or username and password.
-    </p>
-
-    <form id="loginForm">
-      <div class="form-group">
-        <label for="loginIdentifier" data-i18n="loginIdentifier">Email or username</label>
-        <input id="loginIdentifier" name="identifier" type="text"
-          autocomplete="username" required maxlength="254"
-          placeholder="Email or username">
+  <main class="main">
+    <header class="topbar">
+      <h1 id="pageTitle">Dashboard</h1>
+      <div class="top-actions">
+        <select class="lang-select" id="languageSelect" aria-label="Language">
+          <option value="en">🇬🇧 English</option>
+          <option value="ru">🇷🇺 Русский</option>
+        </select>
+        <div class="user-pill" id="userPill">Guest</div>
       </div>
+    </header>
 
-      <div class="form-group">
-        <label for="loginPassword" data-i18n="password">Password</label>
-        <input id="loginPassword" name="password" type="password"
-          autocomplete="current-password" maxlength="10">
-        <div class="form-help" data-i18n="passwordHelp">
-          Maximum 10 characters. Any characters are allowed; no minimum.
+    <!-- DASHBOARD -->
+    <section class="page active" id="page-dashboard">
+      <div class="welcome">
+        <h2 data-i18n="welcomeTitle">Welcome to VideoCash</h2>
+        <p data-i18n="welcomeText">
+          Explore social task categories and verified offers. New task and payout features will appear when their integrations are ready.
+        </p>
+        <div class="btn-row">
+          <button class="btn" data-go="platforms" data-i18n="exploreTasks">Explore social tasks</button>
+          <button class="btn secondary" data-go="offers" data-i18n="viewOffers">View ads & offers</button>
         </div>
       </div>
 
-      <button class="primary-btn full" type="submit" id="loginSubmit" data-i18n="loginButton">
-        Sign in
-      </button>
-    </form>
-
-    <div class="auth-switch">
-      <span data-i18n="noAccount">Don't have an account?</span>
-      <button class="text-btn" type="button" onclick="showAuthForm('register')" data-i18n="createAccount">
-        Create account
-      </button>
-    </div>
-  </div>
-
-  <div class="card form-card hidden" id="registerCard">
-    <h2 data-i18n="registerTitle">Create your account</h2>
-
-    <p class="form-description" data-i18n="registerDescription">
-      Create a VideoCash account to access your dashboard.
-    </p>
-
-    <form id="registerForm">
-      <div class="form-group">
-        <label for="registerUsername" data-i18n="username">Username</label>
-        <input id="registerUsername" name="username" type="text"
-          autocomplete="username" minlength="3" maxlength="24"
-          required placeholder="Your username">
-        <div class="form-help" data-i18n="usernameHelp">
-          Use 3–24 English letters, numbers, or underscores.
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-label" data-i18n="availableBalance">Available balance</div>
+          <div class="stat-value" id="balanceValue">$0.00</div>
+          <div class="stat-note" data-i18n="balanceNote">Account balance from the server</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label" data-i18n="totalEarned">Total earned</div>
+          <div class="stat-value" id="earnedValue">$0.00</div>
+          <div class="stat-note" data-i18n="earnedNote">Total recorded by the server</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label" data-i18n="availableTasks">Available tasks</div>
+          <div class="stat-value" id="tasksValue">0</div>
+          <div class="stat-note" data-i18n="tasksNote">Verified tasks currently available</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label" data-i18n="verifiedOffers">Verified offers</div>
+          <div class="stat-value" id="offersValue">0</div>
+          <div class="stat-note" data-i18n="offersNote">Offers available after integration</div>
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="registerEmail" data-i18n="email">Email address</label>
-        <input id="registerEmail" name="email" type="email"
-          autocomplete="email" maxlength="254" required placeholder="you@example.com">
+      <div class="section-head">
+        <div>
+          <h2 data-i18n="mainPlatforms">Main platforms</h2>
+          <p data-i18n="mainPlatformsText">Explore the platforms planned for social tasks.</p>
+        </div>
+        <button class="link-btn" data-go="platforms" data-i18n="viewAll">View all →</button>
       </div>
+      <div class="grid" id="dashboardPlatforms"></div>
 
-      <div class="form-group">
-        <label for="registerPassword" data-i18n="password">Password</label>
-        <input id="registerPassword" name="password" type="password"
-          autocomplete="new-password" maxlength="10">
-        <div class="form-help" data-i18n="passwordHelp">
-          Maximum 10 characters. Any characters are allowed; no minimum.
+      <div class="section-head">
+        <div>
+          <h2 data-i18n="featuredOffers">Ads & offers</h2>
+          <p data-i18n="featuredOffersText">Provider offers will be shown here after approval and successful integration.</p>
+        </div>
+        <button class="link-btn" data-go="offers" data-i18n="viewAll">View all →</button>
+      </div>
+      <div class="empty" data-i18n="noVerifiedOffers">
+        No verified offers are available yet. Offerwall integration is pending.
+      </div>
+    </section>
+
+    <!-- SOCIAL TASKS -->
+    <section class="page" id="page-platforms">
+      <div class="card">
+        <h2 data-i18n="socialTasksTitle">Social Tasks</h2>
+        <p data-i18n="socialTasksIntro">
+          Choose a platform to explore. Platforms are listed for organization only; a listing does not mean tasks are currently available.
+        </p>
+        <div class="alert info" data-i18n="tasksHonesty">
+          No task is rewarded until a real task, verification method, and funding source are configured.
         </div>
       </div>
 
-      <button class="primary-btn full" type="submit" id="registerSubmit" data-i18n="registerButton">
-        Create account
-      </button>
-    </form>
-
-    <div class="auth-switch">
-      <span data-i18n="alreadyAccount">Already have an account?</span>
-      <button class="text-btn" type="button" onclick="showAuthForm('login')" data-i18n="loginButton">
-        Sign in
-      </button>
-    </div>
-  </div>
-
-  <div class="card form-card hidden" id="profileCard">
-    <div class="profile-row">
-      <div class="avatar" style="width:52px;height:52px" id="profileAvatar">?</div>
-      <div>
-        <div style="font-weight:bold" id="profileUsername">—</div>
-        <div class="form-help" data-i18n="signedIn">Signed in</div>
+      <div class="filters" id="platformFilters">
+        <button class="filter active" data-filter="all" data-i18n="filterAll">All platforms</button>
+        <button class="filter" data-filter="video" data-i18n="filterVideo">Video</button>
+        <button class="filter" data-filter="social" data-i18n="filterSocial">Social</button>
+        <button class="filter" data-filter="messaging" data-i18n="filterMessaging">Messaging</button>
+        <button class="filter" data-filter="other" data-i18n="filterOther">Other platforms</button>
       </div>
-    </div>
 
-    <div class="profile-row">
-      <div>
-        <div class="profile-label" data-i18n="username">Username</div>
-        <div class="profile-value" id="profileUsernameValue">—</div>
+      <div class="platform-section">
+        <div class="section-head">
+          <div>
+            <h2 data-i18n="mainPlatforms">Main platforms</h2>
+            <p data-i18n="mainPlatformsText">The 15 main platforms selected for VideoCash.</p>
+          </div>
+          <span class="badge" data-i18n="planned">Planned</span>
+        </div>
+        <div class="grid" id="mainPlatforms"></div>
       </div>
-    </div>
 
-    <div class="profile-row">
-      <div>
-        <div class="profile-label" data-i18n="email">Email address</div>
-        <div class="profile-value" id="profileEmail">—</div>
+      <div class="platform-section">
+        <div class="section-head">
+          <div>
+            <h2 data-i18n="otherPlatforms">Other platforms</h2>
+            <p data-i18n="otherPlatformsText">Additional platforms for possible future expansion.</p>
+          </div>
+          <span class="badge" data-i18n="planned">Planned</span>
+        </div>
+        <div class="grid" id="otherPlatforms"></div>
       </div>
-    </div>
+    </section>
 
-    <div class="profile-row">
-      <div>
-        <div class="profile-label" data-i18n="accountPlan">Account plan</div>
-        <div class="profile-value" id="profilePlan">Free</div>
+    <!-- ADS AND OFFERS -->
+    <section class="page" id="page-offers">
+      <div class="card">
+        <h2 data-i18n="offersTitle">Ads & Offers</h2>
+        <p data-i18n="offersIntro">
+          Offers will appear here only after the provider has approved the application and the integration has been tested.
+        </p>
+        <div class="alert warning" data-i18n="offersPending">
+          AdGem and other offer providers are not confirmed as working in this dashboard yet. No offer earnings are being promised.
+        </div>
       </div>
-    </div>
+      <div class="offer-grid">
+        <div class="offer-card">
+          <div class="offer-top">
+            <div class="platform-icon">🎁</div>
+            <div><h3>AdGem Offerwall</h3><span class="badge pending" data-i18n="pendingIntegration">Integration pending</span></div>
+          </div>
+          <p data-i18n="adgemDescription">Offerwall availability depends on publisher approval, integration, country eligibility, and provider tracking.</p>
+          <button class="btn secondary full" disabled data-i18n="notAvailable">Not available yet</button>
+        </div>
+        <div class="offer-card">
+          <div class="offer-top">
+            <div class="platform-icon">📲</div>
+            <div><h3 data-i18n="appInstalls">App installs & trials</h3><span class="badge pending" data-i18n="pendingIntegration">Integration pending</span></div>
+          </div>
+          <p data-i18n="appDescription">These offers will be listed only when a connected provider supplies real, eligible offers.</p>
+          <button class="btn secondary full" disabled data-i18n="notAvailable">Not available yet</button>
+        </div>
+        <div class="offer-card">
+          <div class="offer-top">
+            <div class="platform-icon">📝</div>
+            <div><h3 data-i18n="surveys">Paid surveys</h3><span class="badge pending" data-i18n="pendingIntegration">Integration pending</span></div>
+          </div>
+          <p data-i18n="surveyDescription">Survey availability and rewards depend on the provider and the user's country.</p>
+          <button class="btn secondary full" disabled data-i18n="notAvailable">Not available yet</button>
+        </div>
+        <div class="offer-card">
+          <div class="offer-top">
+            <div class="platform-icon">🏷️</div>
+            <div><h3 data-i18n="promotions">Promotional offers</h3><span class="badge pending" data-i18n="pendingIntegration">Integration pending</span></div>
+          </div>
+          <p data-i18n="promoDescription">Promotional tasks will be enabled only after their source, rules, and reward funding are confirmed.</p>
+          <button class="btn secondary full" disabled data-i18n="notAvailable">Not available yet</button>
+        </div>
+      </div>
+    </section>
 
-    <button class="danger-btn" style="margin-top:20px" type="button"
-      onclick="logout()" id="logoutButton" data-i18n="logout">
-      Sign out
-    </button>
-  </div>
-</section>
+    <!-- EARNINGS -->
+    <section class="page" id="page-earnings">
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-label" data-i18n="availableBalance">Available balance</div>
+          <div class="stat-value" id="earningsBalance">$0.00</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label" data-i18n="totalEarned">Total earned</div>
+          <div class="stat-value" id="earningsTotal">$0.00</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label" data-i18n="completedTasks">Completed tasks</div>
+          <div class="stat-value">—</div>
+          <div class="stat-note" data-i18n="taskHistoryPending">Task history is not connected yet.</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label" data-i18n="pendingVerification">Pending verification</div>
+          <div class="stat-value">—</div>
+          <div class="stat-note" data-i18n="verificationPendingNote">Verification records are not connected yet.</div>
+        </div>
+      </div>
+      <div class="card">
+        <h2 data-i18n="earningsHistory">Earnings history</h2>
+        <p data-i18n="earningsHistoryText">
+          Your balance and total earnings are loaded from your account. Detailed task history will be displayed when the backend supports task records.
+        </p>
+        <div class="empty" data-i18n="noHistory">No task history is connected yet.</div>
+      </div>
+    </section>
 
-</div>
+    <!-- WITHDRAW -->
+    <section class="page" id="page-withdraw">
+      <div class="card">
+        <h2 data-i18n="withdrawTitle">Withdraw USDT (TRC20)</h2>
+        <p data-i18n="withdrawIntro">
+          Withdrawals are not enabled yet. The payout system, verification rules, minimum withdrawal, and real revenue source must be ready first.
+        </p>
+        <div class="alert warning" data-i18n="withdrawWarning">
+          Withdrawal is disabled. Do not send funds to anyone claiming to activate withdrawals.
+        </div>
+        <form id="withdrawForm">
+          <div class="field">
+            <label for="withdrawNetwork" data-i18n="networkLabel">Network</label>
+            <input id="withdrawNetwork" value="TRON (TRC20)" disabled>
+          </div>
+          <div class="field">
+            <label for="withdrawAddress" data-i18n="walletAddress">USDT wallet address</label>
+            <input id="withdrawAddress" placeholder="TRC20 address" disabled>
+          </div>
+          <div class="field">
+            <label for="withdrawAmount" data-i18n="withdrawAmount">Amount (USDT)</label>
+            <input id="withdrawAmount" type="number" min="0" step="0.01" disabled>
+          </div>
+          <button class="btn full" type="button" disabled data-i18n="withdrawDisabled">Withdrawals unavailable</button>
+        </form>
+      </div>
+    </section>
 
-<footer class="footer">
-  <span>© 2026 VideoCash</span>
-  <span data-i18n="footerText">Account balances reflect data returned by the server.</span>
-</footer>
+    <!-- ACCOUNT -->
+    <section class="page" id="page-account">
+      <div class="auth-layout">
+        <div class="card" id="authCard">
+          <h2 data-i18n="accountTitle">Account</h2>
+          <p data-i18n="accountIntro">Create an account or sign in to view your server-backed balance.</p>
+          <div class="auth-tabs">
+            <button class="btn" id="showLogin" type="button" data-i18n="loginTab">Log in</button>
+            <button class="btn secondary" id="showRegister" type="button" data-i18n="registerTab">Register</button>
+          </div>
 
-</main>
+          <form id="loginForm" class="auth-form active">
+            <div class="field">
+              <label for="loginIdentifier" data-i18n="usernameOrEmail">Username or email</label>
+              <input id="loginIdentifier" autocomplete="username" required>
+            </div>
+            <div class="field">
+              <label for="loginPassword" data-i18n="password">Password</label>
+              <input id="loginPassword" type="password" maxlength="10" autocomplete="current-password">
+              <span class="helper" data-i18n="passwordRule">Maximum 10 characters. Any characters are allowed; no minimum.</span>
+            </div>
+            <button class="btn full" type="submit" data-i18n="loginButton">Log in</button>
+          </form>
+
+          <form id="registerForm" class="auth-form">
+            <div class="field">
+              <label for="registerUsername" data-i18n="username">Username</label>
+              <input id="registerUsername" minlength="3" maxlength="24" pattern="[A-Za-z0-9_]{3,24}" autocomplete="username" required>
+              <span class="helper" data-i18n="usernameRule">3–24 letters, numbers, or underscores.</span>
+            </div>
+            <div class="field">
+              <label for="registerEmail" data-i18n="email">Email</label>
+              <input id="registerEmail" type="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="registerPassword" data-i18n="password">Password</label>
+              <input id="registerPassword" type="password" maxlength="10" autocomplete="new-password">
+              <span class="helper" data-i18n="passwordRule">Maximum 10 characters. Any characters are allowed; no minimum.</span>
+            </div>
+            <button class="btn full" type="submit" data-i18n="registerButton">Create account</button>
+          </form>
+        </div>
+
+        <div class="card" id="loggedInCard" hidden>
+          <h2 data-i18n="accountDetails">Account details</h2>
+          <p data-i18n="accountDetailsText">Your account information currently stored by VideoCash.</p>
+          <div class="user-details">
+            <div data-i18n="username">Username</div><div id="detailUsername">—</div>
+            <div data-i18n="email">Email</div><div id="detailEmail">—</div>
+            <div data-i18n="plan">Plan</div><div id="detailPlan">—</div>
+            <div data-i18n="availableBalance">Available balance</div><div id="detailBalance">$0.00</div>
+            <div data-i18n="totalEarned">Total earned</div><div id="detailEarned">$0.00</div>
+          </div>
+          <hr>
+          <button class="btn danger" id="logoutButton" type="button" data-i18n="logoutButton">Log out</button>
+        </div>
+      </div>
+    </section>
+  </main>
 </div>
 
 <nav class="mobile-nav">
-  <button class="active" data-page="dashboard" onclick="showPage('dashboard')"><span>▦</span><span data-i18n="dashboard">Dashboard</span></button>
-  <button data-page="platforms" onclick="showPage('platforms')"><span>◎</span><span data-i18n="platformsShort">Platforms</span></button>
-  <button data-page="offers" onclick="showPage('offers')"><span>✦</span><span data-i18n="offers">Offers</span></button>
-  <button data-page="earnings" onclick="showPage('earnings')"><span>↗</span><span data-i18n="earningsShort">Earnings</span></button>
-  <button data-page="account" onclick="showPage('account')"><span>♙</span><span data-i18n="accountShort">Account</span></button>
+  <button class="active" data-page="dashboard" data-i18n="mobileDashboard">⌂ Home</button>
+  <button data-page="platforms" data-i18n="mobileTasks">◎ Tasks</button>
+  <button data-page="offers" data-i18n="mobileOffers">▣ Offers</button>
+  <button data-page="earnings" data-i18n="mobileEarnings">↗ Earnings</button>
+  <button data-page="account" data-i18n="mobileAccount">♙ Account</button>
 </nav>
 
-<div id="toast" role="status" aria-live="polite"
-  style="position:fixed;bottom:85px;left:50%;transform:translateX(-50%);background:#20283b;color:white;padding:13px 18px;border-radius:12px;border:1px solid #3c4964;max-width:90%;font-size:13px;z-index:100;display:none;box-shadow:0 8px 30px #0008">
-</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 <script>
-'use strict';
-
 const API_BASE = '';
-let currentUser = null;
-let currentPage = 'dashboard';
-let currentFilter = 'all';
-let language = 'en';
-let toastTimer = null;
 
 const translations = {
-en: {
-  menu:'MENU', dashboard:'Dashboard', platforms:'Social platforms',
-  platformsShort:'Platforms', offers:'Offers', earnings:'Earnings',
-  earningsShort:'Earnings', withdraw:'Withdraw', account:'ACCOUNT',
-  myAccount:'My account', accountShort:'Account',
-  secureAccount:'Secure account access', memberArea:'MEMBER AREA',
-  welcome:'Welcome to VideoCash',
-  welcomeText:'Manage your account, explore social platforms and check available opportunities.',
-  availableBalance:'Available balance', balanceNote:'Based on confirmed account data',
-  totalEarned:'Total earned', earnedNote:'Confirmed earnings only',
-  completedViews:'Completed views', viewsNote:'Recorded by the system',
-  explorePlatforms:'Explore platforms', exploreText:'Browse supported social platforms.',
-  viewAll:'View all', socialTitle:'Social platforms',
-  socialText:'Choose a platform to explore its available features.',
-  platformNotice:'Platform listings do not guarantee rewards. Only verified, approved tasks can generate earnings.',
-  allPlatforms:'All platforms', videoPlatforms:'Video',
-  socialCategory:'Social', messaging:'Messaging',
-  offersTitle:'Available offers',
-  offersText:'Approved third-party offers will appear here when integration is ready.',
-  offersNotice:'Offerwall integration is not yet confirmed. No offer is currently advertised as payable.',
-  noOffers:'No verified offers available',
-  noOffersText:'This section will be updated after the offer provider has approved VideoCash and the integration has been tested.',
-  earningsTitle:'Earnings history',
-  earningsText:'Review the earnings recorded for your account.',
-  noTransactions:'No transaction history available',
-  noTransactionsText:'Confirmed transactions will be displayed here when the relevant system is implemented.',
-  withdrawTitle:'Withdraw funds',
-  withdrawText:'Withdrawal functionality is not available yet.',
-  withdrawNotice:'Withdrawals are disabled until real revenue, payment verification, security checks and the payout system are ready.',
-  withdrawRequest:'Withdrawal request', withdrawAmount:'Amount (USD)',
-  paymentNetwork:'Payment network', walletAddress:'Wallet address',
-  withdrawDisabled:'Withdrawals unavailable',
-  accountTitle:'My account', accountText:'Register or sign in to access your account.',
-  loginTitle:'Sign in',
-  loginDescription:'Sign in with your registered email or username and password.',
-  loginIdentifier:'Email or username', email:'Email address',
-  password:'Password', loginButton:'Sign in',
-  noAccount:"Don't have an account?", createAccount:'Create account',
-  registerTitle:'Create your account',
-  registerDescription:'Create a VideoCash account to access your dashboard.',
-  username:'Username',
-  usernameHelp:'Use 3–24 English letters, numbers, or underscores.',
-  passwordHelp:'Maximum 10 characters. Any characters are allowed; no minimum.',
-  registerButton:'Create account',
-  alreadyAccount:'Already have an account?', signedIn:'Signed in',
-  accountPlan:'Account plan', logout:'Sign out',
-  footerText:'Account balances reflect data returned by the server.',
-  loginRequired:'Please log in or create an account to access your personal dashboard.',
-  notSignedIn:'You are not signed in.', loggedIn:'You are signed in.',
-  freePlan:'Free', platformPending:'Not available yet',
-  registerSuccess:'Account created successfully.',
-  loginSuccess:'Signed in successfully.', logoutSuccess:'Signed out.',
-  requestError:'The request could not be completed. Please try again.',
-  connectionError:'Cannot connect to the server. Check your internet connection.',
-  invalidResponse:'The server returned an unexpected response.',
-  invalidCredentials:'Unable to sign in with those details.',
-  userExists:'This username or email may already be registered.',
-  usernameError:'Username must be 3–24 English letters, numbers, or underscores.',
-  passwordError:'Password must not exceed 10 characters.',
-  emailError:'Please enter a valid email address.'
-},
-
-ru: {
-  menu:'МЕНЮ', dashboard:'Панель',
-  platforms:'Социальные платформы', platformsShort:'Платформы',
-  offers:'Предложения', earnings:'Доходы', earningsShort:'Доходы',
-  withdraw:'Вывод', account:'АККАУНТ', myAccount:'Мой аккаунт',
-  accountShort:'Аккаунт', secureAccount:'Защищённый доступ к аккаунту',
-  memberArea:'ЛИЧНЫЙ КАБИНЕТ',
-  welcome:'Добро пожаловать в VideoCash',
-  welcomeText:'Управляйте аккаунтом, изучайте социальные платформы и доступные возможности.',
-  availableBalance:'Доступный баланс',
-  balanceNote:'На основе подтверждённых данных аккаунта',
-  totalEarned:'Всего заработано', earnedNote:'Только подтверждённые начисления',
-  completedViews:'Просмотрено видео', viewsNote:'Записано системой',
-  explorePlatforms:'Платформы',
-  exploreText:'Просмотрите поддерживаемые социальные платформы.',
-  viewAll:'Все платформы', socialTitle:'Социальные платформы',
-  socialText:'Выберите платформу, чтобы посмотреть доступные функции.',
-  platformNotice:'Наличие платформы не гарантирует вознаграждение. Доход возможен только за проверенные и одобренные задания.',
-  allPlatforms:'Все', videoPlatforms:'Видео',
-  socialCategory:'Социальные', messaging:'Сообщения',
-  offersTitle:'Доступные предложения',
-  offersText:'Одобренные предложения появятся после подключения интеграции.',
-  offersNotice:'Интеграция Offerwall ещё не подтверждена. Сейчас нет предложений с гарантированной оплатой.',
-  noOffers:'Нет проверенных предложений',
-  noOffersText:'Раздел обновится после одобрения VideoCash провайдером и тестирования интеграции.',
-  earningsTitle:'История доходов',
-  earningsText:'Просмотрите начисления по аккаунту.',
-  noTransactions:'История операций отсутствует',
-  noTransactionsText:'Подтверждённые операции появятся после реализации соответствующей системы.',
-  withdrawTitle:'Вывод средств', withdrawText:'Вывод средств пока недоступен.',
-  withdrawNotice:'Вывод отключён до появления реального дохода, проверки платежей, безопасности и системы выплат.',
-  withdrawRequest:'Запрос на вывод', withdrawAmount:'Сумма (USD)',
-  paymentNetwork:'Платёжная сеть', walletAddress:'Адрес кошелька',
-  withdrawDisabled:'Вывод недоступен',
-  accountTitle:'Мой аккаунт', accountText:'Создайте аккаунт или войдите в систему.',
-  loginTitle:'Войти',
-  loginDescription:'Войдите с помощью электронной почты или имени пользователя и пароля.',
-  loginIdentifier:'Email или имя пользователя',
-  email:'Электронная почта', password:'Пароль', loginButton:'Войти',
-  noAccount:'Нет аккаунта?', createAccount:'Создать аккаунт',
-  registerTitle:'Создать аккаунт',
-  registerDescription:'Создайте аккаунт VideoCash для доступа к панели.',
-  username:'Имя пользователя',
-  usernameHelp:'От 3 до 24 символов: английские буквы, цифры и подчёркивание.',
-  passwordHelp:'Не более 10 символов. Можно использовать любые символы; минимальной длины нет.',
-  registerButton:'Создать аккаунт',
-  alreadyAccount:'Уже есть аккаунт?', signedIn:'Вы вошли в систему',
-  accountPlan:'Тариф', logout:'Выйти',
-  footerText:'Баланс отображает данные, полученные от сервера.',
-  loginRequired:'Войдите или создайте аккаунт для доступа к личной панели.',
-  notSignedIn:'Вы не вошли в систему.', loggedIn:'Вы вошли в систему.',
-  freePlan:'Бесплатный', platformPending:'Пока недоступно',
-  registerSuccess:'Аккаунт успешно создан.', loginSuccess:'Вход выполнен.',
-  logoutSuccess:'Вы вышли из системы.',
-  requestError:'Не удалось выполнить запрос. Попробуйте ещё раз.',
-  connectionError:'Нет соединения с сервером. Проверьте интернет.',
-  invalidResponse:'Сервер вернул неожиданный ответ.',
-  invalidCredentials:'Не удалось войти с этими данными.',
-  userExists:'Это имя пользователя или email уже зарегистрированы.',
-  usernameError:'Имя пользователя: 3–24 английских буквы, цифры или подчёркивание.',
-  passwordError:'Пароль должен содержать не более 10 символов.',
-  emailError:'Введите действительный адрес электронной почты.'
-}
+  en: {
+    navDashboard:'⌂ Dashboard',navTasks:'◎ Social Tasks',navOffers:'▣ Ads & Offers',
+    navEarnings:'↗ My Earnings',navWithdraw:'⇩ Withdraw',navAccount:'♙ Account',
+    sidebarNote:'Earn only from verified tasks and real available offers.<br>Rewards depend on actual platform revenue.',
+    welcomeTitle:'Welcome to VideoCash',
+    welcomeText:'Explore social task categories and verified offers. New task and payout features will appear when their integrations are ready.',
+    exploreTasks:'Explore social tasks',viewOffers:'View ads & offers',
+    availableBalance:'Available balance',totalEarned:'Total earned',
+    balanceNote:'Account balance from the server',earnedNote:'Total recorded by the server',
+    availableTasks:'Available tasks',tasksNote:'Verified tasks currently available',
+    verifiedOffers:'Verified offers',offersNote:'Offers available after integration',
+    mainPlatforms:'Main platforms',
+    mainPlatformsText:'The 15 main platforms selected for VideoCash.',
+    featuredOffers:'Ads & offers',
+    featuredOffersText:'Provider offers will be shown here after approval and successful integration.',
+    viewAll:'View all →',
+    noVerifiedOffers:'No verified offers are available yet. Offerwall integration is pending.',
+    socialTasksTitle:'Social Tasks',
+    socialTasksIntro:'Choose a platform to explore. Platforms are listed for organization only; a listing does not mean tasks are currently available.',
+    tasksHonesty:'No task is rewarded until a real task, verification method, and funding source are configured.',
+    filterAll:'All platforms',filterVideo:'Video',filterSocial:'Social',
+    filterMessaging:'Messaging',filterOther:'Other platforms',
+    otherPlatforms:'Other platforms',
+    otherPlatformsText:'Additional platforms for possible future expansion.',
+    planned:'Planned',notAvailable:'Not available yet',
+    offersTitle:'Ads & Offers',
+    offersIntro:'Offers will appear here only after the provider has approved the application and the integration has been tested.',
+    offersPending:'AdGem and other offer providers are not confirmed as working in this dashboard yet. No offer earnings are being promised.',
+    pendingIntegration:'Integration pending',
+    adgemDescription:'Offerwall availability depends on publisher approval, integration, country eligibility, and provider tracking.',
+    appInstalls:'App installs & trials',
+    appDescription:'These offers will be listed only when a connected provider supplies real, eligible offers.',
+    surveys:'Paid surveys',
+    surveyDescription:"Survey availability and rewards depend on the provider and the user's country.",
+    promotions:'Promotional offers',
+    promoDescription:'Promotional tasks will be enabled only after their source, rules, and reward funding are confirmed.',
+    completedTasks:'Completed tasks',pendingVerification:'Pending verification',
+    taskHistoryPending:'Task history is not connected yet.',
+    verificationPendingNote:'Verification records are not connected yet.',
+    earningsHistory:'Earnings history',
+    earningsHistoryText:'Your balance and total earnings are loaded from your account. Detailed task history will be displayed when the backend supports task records.',
+    noHistory:'No task history is connected yet.',
+    withdrawTitle:'Withdraw USDT (TRC20)',
+    withdrawIntro:'Withdrawals are not enabled yet. The payout system, verification rules, minimum withdrawal, and real revenue source must be ready first.',
+    withdrawWarning:'Withdrawal is disabled. Do not send funds to anyone claiming to activate withdrawals.',
+    networkLabel:'Network',walletAddress:'USDT wallet address',withdrawAmount:'Amount (USDT)',
+    withdrawDisabled:'Withdrawals unavailable',
+    accountTitle:'Account',
+    accountIntro:'Create an account or sign in to view your server-backed balance.',
+    loginTab:'Log in',registerTab:'Register',usernameOrEmail:'Username or email',
+    password:'Password',passwordRule:'Maximum 10 characters. Any characters are allowed; no minimum.',
+    username:'Username',usernameRule:'3–24 letters, numbers, or underscores.',
+    email:'Email',loginButton:'Log in',registerButton:'Create account',
+    accountDetails:'Account details',
+    accountDetailsText:'Your account information currently stored by VideoCash.',
+    plan:'Plan',logoutButton:'Log out',
+    mobileDashboard:'⌂ Home',mobileTasks:'◎ Tasks',mobileOffers:'▣ Offers',
+    mobileEarnings:'↗ Earnings',mobileAccount:'♙ Account',
+    titleDashboard:'Dashboard',titlePlatforms:'Social Tasks',titleOffers:'Ads & Offers',
+    titleEarnings:'My Earnings',titleWithdraw:'Withdraw',titleAccount:'Account',
+    guest:'Guest',statusPlanned:'Tasks not available yet',
+    successRegister:'Account created successfully.',
+    successLogin:'Logged in successfully.',
+    successLogout:'Logged out successfully.',
+    userExists:'This username or email is already registered.',
+    invalidCredentials:'Invalid username/email or password.',
+    requestFailed:'Request failed. Please try again.',
+    serverUnavailable:'Could not connect to the server. Check the API or internet connection.',
+    registeredError:'Could not create the account.',
+    loginError:'Could not log in.',
+    loggedIn:'Signed in',loggedOut:'Not signed in',
+    missingFields:'Please fill in the required fields.',
+    invalidUsername:'Username must be 3–24 letters, numbers, or underscores.',
+    invalidEmail:'Enter a valid email address.',
+    platformPending:'No verified tasks available',
+    otherSectionLabel:'Other',
+    statusUnavailable:'Not available yet'
+  },
+  ru: {
+    navDashboard:'⌂ Панель',navTasks:'◎ Социальные задания',navOffers:'▣ Реклама и предложения',
+    navEarnings:'↗ Мои доходы',navWithdraw:'⇩ Вывод',navAccount:'♙ Аккаунт',
+    sidebarNote:'Получайте вознаграждения только за проверенные задания и реальные предложения.<br>Выплаты зависят от фактического дохода платформы.',
+    welcomeTitle:'Добро пожаловать в VideoCash',
+    welcomeText:'Изучайте категории социальных заданий и проверенные предложения. Новые функции появятся после настройки интеграций.',
+    exploreTasks:'Социальные задания',viewOffers:'Реклама и предложения',
+    availableBalance:'Доступный баланс',totalEarned:'Всего заработано',
+    balanceNote:'Баланс, полученный с сервера',earnedNote:'Общая сумма с сервера',
+    availableTasks:'Доступные задания',tasksNote:'Проверенные доступные задания',
+    verifiedOffers:'Проверенные предложения',offersNote:'Предложения после интеграции',
+    mainPlatforms:'Основные платформы',
+    mainPlatformsText:'15 основных платформ, выбранных для VideoCash.',
+    featuredOffers:'Реклама и предложения',
+    featuredOffersText:'Предложения появятся после одобрения и успешной интеграции.',
+    viewAll:'Все →',
+    noVerifiedOffers:'Проверенных предложений пока нет. Интеграция Offerwall ожидает завершения.',
+    socialTasksTitle:'Социальные задания',
+    socialTasksIntro:'Выберите платформу. Список нужен для организации; наличие платформы не означает, что задания доступны.',
+    tasksHonesty:'Вознаграждения не начисляются, пока не настроены реальные задания, проверка и источник финансирования.',
+    filterAll:'Все платформы',filterVideo:'Видео',filterSocial:'Социальные',
+    filterMessaging:'Мессенджеры',filterOther:'Другие платформы',
+    otherPlatforms:'Другие платформы',
+    otherPlatformsText:'Дополнительные платформы для возможного расширения.',
+    planned:'В планах',notAvailable:'Пока недоступно',
+    offersTitle:'Реклама и предложения',
+    offersIntro:'Предложения появятся после одобрения приложения провайдером и проверки интеграции.',
+    offersPending:'Работа AdGem и других провайдеров пока не подтверждена в панели. Доход от предложений не гарантируется.',
+    pendingIntegration:'Интеграция ожидается',
+    adgemDescription:'Доступность Offerwall зависит от одобрения издателя, интеграции, страны и отслеживания провайдера.',
+    appInstalls:'Установка приложений и пробные версии',
+    appDescription:'Предложения появятся после подключения провайдера и получения реальных доступных заданий.',
+    surveys:'Платные опросы',
+    surveyDescription:'Доступность опросов и вознаграждения зависят от провайдера и страны пользователя.',
+    promotions:'Промо-предложения',
+    promoDescription:'Промо-задания будут включены после подтверждения источника, правил и финансирования.',
+    completedTasks:'Выполненные задания',pendingVerification:'Ожидает проверки',
+    taskHistoryPending:'История заданий пока не подключена.',
+    verificationPendingNote:'Данные проверки пока не подключены.',
+    earningsHistory:'История доходов',
+    earningsHistoryText:'Баланс и общий доход загружаются из аккаунта. Подробная история появится после поддержки записей о заданиях сервером.',
+    noHistory:'История заданий пока не подключена.',
+    withdrawTitle:'Вывод USDT (TRC20)',
+    withdrawIntro:'Вывод пока отключён. Сначала необходимо подготовить систему выплат, правила проверки, минимальную сумму и реальный источник дохода.',
+    withdrawWarning:'Вывод отключён. Не отправляйте деньги тем, кто обещает активировать выплаты.',
+    networkLabel:'Сеть',walletAddress:'Адрес кошелька USDT',withdrawAmount:'Сумма (USDT)',
+    withdrawDisabled:'Вывод недоступен',
+    accountTitle:'Аккаунт',
+    accountIntro:'Создайте аккаунт или войдите, чтобы увидеть баланс с сервера.',
+    loginTab:'Войти',registerTab:'Регистрация',usernameOrEmail:'Имя пользователя или email',
+    password:'Пароль',passwordRule:'Максимум 10 символов. Любые символы; минимальной длины нет.',
+    username:'Имя пользователя',usernameRule:'3–24 буквы, цифры или символы подчёркивания.',
+    email:'Email',loginButton:'Войти',registerButton:'Создать аккаунт',
+    accountDetails:'Данные аккаунта',
+    accountDetailsText:'Информация аккаунта, сохранённая в VideoCash.',
+    plan:'Тариф',logoutButton:'Выйти',
+    mobileDashboard:'⌂ Главная',mobileTasks:'◎ Задания',mobileOffers:'▣ Офферы',
+    mobileEarnings:'↗ Доходы',mobileAccount:'♙ Аккаунт',
+    titleDashboard:'Панель',titlePlatforms:'Социальные задания',titleOffers:'Реклама и предложения',
+    titleEarnings:'Мои доходы',titleWithdraw:'Вывод',titleAccount:'Аккаунт',
+    guest:'Гость',statusPlanned:'Задания пока недоступны',
+    successRegister:'Аккаунт успешно создан.',
+    successLogin:'Вход выполнен.',
+    successLogout:'Вы вышли из аккаунта.',
+    userExists:'Это имя пользователя или email уже зарегистрированы.',
+    invalidCredentials:'Неверное имя пользователя/email или пароль.',
+    requestFailed:'Запрос не выполнен. Попробуйте ещё раз.',
+    serverUnavailable:'Не удалось подключиться к серверу. Проверьте API или интернет.',
+    registeredError:'Не удалось создать аккаунт.',
+    loginError:'Не удалось войти.',
+    loggedIn:'Вход выполнен',loggedOut:'Не выполнен вход',
+    missingFields:'Заполните обязательные поля.',
+    invalidUsername:'Имя пользователя: 3–24 буквы, цифры или подчёркивания.',
+    invalidEmail:'Введите действительный email.',
+    platformPending:'Проверенных заданий пока нет',
+    otherSectionLabel:'Другие',
+    statusUnavailable:'Пока недоступно'
+  }
 };
 
-const platforms = [
-  {name:'Facebook', icon:'f', category:'social', desc:{en:'Social network and community.',ru:'Социальная сеть и сообщества.'}},
-  {name:'Instagram', icon:'◎', category:'social', desc:{en:'Photos, stories and reels.',ru:'Фото, истории и Reels.'}},
-  {name:'WhatsApp', icon:'◉', category:'messaging', desc:{en:'Messaging and communication.',ru:'Общение и сообщения.'}},
-  {name:'X', icon:'𝕏', category:'social', desc:{en:'Posts and public conversations.',ru:'Публикации и обсуждения.'}},
-  {name:'Telegram', icon:'➤', category:'messaging', desc:{en:'Channels, groups and messages.',ru:'Каналы, группы и сообщения.'}},
-  {name:'Snapchat', icon:'👻', category:'social', desc:{en:'Stories and short-form content.',ru:'Истории и короткие публикации.'}},
-  {name:'Likee', icon:'♥', category:'video', desc:{en:'Short videos and creative clips.',ru:'Короткие видео и творчество.'}},
-  {name:'TikTok', icon:'♪', category:'video', desc:{en:'Short videos and creator content.',ru:'Короткие видео и контент авторов.'}},
-  {name:'VK', icon:'ᴠκ', category:'social', desc:{en:'Social network and communities.',ru:'Социальная сеть и сообщества.'}},
-  {name:'LinkedIn', icon:'in', category:'social', desc:{en:'Professional network.',ru:'Профессиональная сеть.'}},
-  {name:'Threads', icon:'＠', category:'social', desc:{en:'Text conversations and updates.',ru:'Текстовые обсуждения и новости.'}},
-  {name:'Quora', icon:'Q', category:'social', desc:{en:'Questions and answers.',ru:'Вопросы и ответы.'}},
-  {name:'Pinterest', icon:'P', category:'social', desc:{en:'Ideas, images and collections.',ru:'Идеи, изображения и подборки.'}},
-  {name:'YouTube', icon:'▶', category:'video', desc:{en:'Videos, channels and Shorts.',ru:'Видео, каналы и Shorts.'}}
-];
-
-function t(key) {
-  return translations[language]?.[key] || translations.en[key] || key;
-}
-
-function showToast(message) {
-  const el = document.getElementById('toast');
-  el.textContent = message;
-  el.style.display = 'block';
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => {
-    el.style.display = 'none';
-  }, 4000);
-}
-
-function showPage(page) {
-  const valid = ['dashboard','platforms','offers','earnings','withdraw','account'];
-
-  if (!valid.includes(page)) page = 'dashboard';
-
-  currentPage = page;
-
-  document.querySelectorAll('.page').forEach(el => {
-    el.classList.toggle('active', el.id === 'page-' + page);
-  });
-
-  document.querySelectorAll('[data-page]').forEach(el => {
-    el.classList.toggle('active', el.dataset.page === page);
-  });
-
-  const titles = {
-    dashboard: t('dashboard'),
-    platforms: t('platforms'),
-    offers: t('offers'),
-    earnings: t('earnings'),
-    withdraw: t('withdraw'),
-    account: t('myAccount')
-  };
-
-  document.getElementById('pageTitle').textContent = titles[page];
-
-  if (page === 'account') {
-    showAuthForm(currentUser ? 'profile' : 'login', false);
-  }
-
-  window.scrollTo({top: 0, behavior: 'smooth'});
-}
-
-function showAuthForm(which, navigate = true) {
-  if (navigate && currentPage !== 'account') {
-    showPage('account');
-  }
-
-  document.getElementById('loginCard').classList.toggle(
-    'hidden', which !== 'login' || !!currentUser
-  );
-
-  document.getElementById('registerCard').classList.toggle(
-    'hidden', which !== 'register' || !!currentUser
-  );
-
-  document.getElementById('profileCard').classList.toggle(
-    'hidden', which !== 'profile' || !currentUser
-  );
-
-  document.getElementById('accountStatus').textContent =
-    currentUser ? t('loggedIn') : t('notSignedIn');
-}
-
-function setLanguage(value) {
-  language = value === 'ru' ? 'ru' : 'en';
-  document.documentElement.lang = language;
-
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.dataset.i18n;
-    if (t(key)) el.textContent = t(key);
-  });
-
-  renderPlatforms();
-  showPage(currentPage);
-  updateAccountUI();
-}
-
-function renderPlatforms() {
-  const cardHTML = p => `
-    <article class="platform-card">
-      <div class="platform-top">
-        <div class="platform-icon">${escapeHTML(p.icon)}</div>
-        <div class="platform-name">${escapeHTML(p.name)}</div>
-      </div>
-      <p class="platform-description">${escapeHTML(p.desc[language])}</p>
-      <span class="tag pending">${escapeHTML(t('platformPending'))}</span>
-    </article>
-  `;
-
-  document.getElementById('dashboardPlatforms').innerHTML =
-    platforms.slice(0, 4).map(cardHTML).join('');
-
-  document.getElementById('allPlatforms').innerHTML =
-    platforms
-      .filter(p => currentFilter === 'all' || p.category === currentFilter)
-      .map(cardHTML)
-      .join('');
-}
-
-function filterPlatforms(filter, button) {
-  currentFilter = filter;
-
-  document.querySelectorAll('.filter-btn').forEach(el => {
-    el.classList.toggle('active', el === button);
-  });
-
-  renderPlatforms();
-}
-
-function escapeHTML(value) {
-  return String(value ?? '').replace(/[&<>"']/g, c => ({
-    '&': '&amp;',
-    '<': '&lt;',
-    '>': '&gt;',
-    '"': '&quot;',
-    "'": '&#39;'
-  }[c]));
-}
-
-function money(value) {
-  const n = Number(value);
-  return '$' + (Number.isFinite(n) ? n : 0).toFixed(2);
-}
-
-function updateAccountUI() {
-  const signed = !!currentUser;
-
-  document.getElementById('avatar').textContent =
-    signed ? (currentUser.username || '?').slice(0,1).toUpperCase() : '?';
-
-  document.getElementById('welcomeName').textContent =
-    signed ? ' ' + currentUser.username : '';
-
-  document.getElementById('dashboardMessage').textContent =
-    signed ? t('loggedIn') : t('loginRequired');
-
-  document.getElementById('welcomeActions').classList.toggle('hidden', signed);
-
-  document.getElementById('balanceValue').textContent = money(currentUser?.balance);
-
-  const earned = currentUser?.total_earned ?? currentUser?.earned ?? 0;
-
-  document.getElementById('earnedValue').textContent = money(earned);
-  document.getElementById('viewsValue').textContent = String(Number(currentUser?.views) || 0);
-  document.getElementById('earningsTotal').textContent = money(earned);
-  document.getElementById('earningsBalance').textContent = money(currentUser?.balance);
-  document.getElementById('earningsViews').textContent = String(Number(currentUser?.views) || 0);
-
-  document.getElementById('accountStatus').textContent =
-    signed ? t('loggedIn') : t('notSignedIn');
-
-  document.getElementById('profileAvatar').textContent =
-    signed ? (currentUser.username || '?').slice(0,1).toUpperCase() : '?';
-
-  document.getElementById('profileUsername').textContent = currentUser?.username || '—';
-  document.getElementById('profileUsernameValue').textContent = currentUser?.username || '—';
-  document.getElementById('profileEmail').textContent = currentUser?.email || '—';
-
-  document.getElementById('profilePlan').textContent =
-    currentUser?.plan === 'free' ? t('freePlan') : (currentUser?.plan || t('freePlan'));
-
-  if (signed) {
-    showAuthForm('profile', false);
-  } else if (currentPage === 'account') {
-    showAuthForm('login', false);
-  }
-}
-
-async function api(path, options = {}) {
-  let response;
-
-  try {
-    response = await fetch(API_BASE + path, {
-      ...options,
-      credentials: 'same-origin',
-      headers: {
-        ...(options.body ? {'Content-Type':'application/json'} : {}),
-        ...(options.headers || {})
-      }
-    });
-  } catch (e) {
-    throw new Error(t('connectionError'));
-  }
-
-  let data;
-
-  try {
-    data = await response.json();
-  } catch (e) {
-    throw new Error(t('invalidResponse'));
-  }
-
-  if (!response.ok || data.success === false) {
-    const raw = String(data.error || '');
-
-    if (response.status === 409) throw new Error(t('userExists'));
-    if (response.status === 401) throw new Error(t('invalidCredentials'));
-    if (/username/i.test(raw)) throw new Error(t('usernameError'));
-    if (/email/i.test(raw)) throw new Error(t('emailError'));
-    if (/password/i.test(raw)) throw new Error(t('passwordError'));
-
-    throw new Error(raw || t('requestError'));
-  }
-
-  return data;
-}
-
-function setBusy(button, busy, label) {
-  if (busy) {
-    button.dataset.oldText = button.textContent;
-    button.disabled = true;
-    button.textContent = language === 'ru' ? 'Подождите…' : 'Please wait…';
-  } else {
-    button.disabled = false;
-    button.textContent = label || button.dataset.oldText || button.textContent;
-  }
-}
-
-document.getElementById('loginForm').addEventListener('submit', async event => {
-  event.preventDefault();
-
-  const form = event.currentTarget;
-  const button = document.getElementById('loginSubmit');
-  const identifier = form.elements.identifier.value.trim();
-  const password = form.elements.password.value;
-
-  if (!identifier) {
-    showToast(t('invalidCredentials'));
-    return;
-  }
-
-  if (password.length > 10) {
-    showToast(t('passwordError'));
-    return;
-  }
-
-  setBusy(button, true);
-
-  try {
-    const data = await api('/api/login', {
-      method: 'POST',
-      body: JSON.stringify({identifier, password})
-    });
-
-    currentUser = data.user || null;
-    updateAccountUI();
-    showPage('dashboard');
-    showToast(t('loginSuccess'));
-  } catch (error) {
-    showToast(error.message || t('requestError'));
-  } finally {
-    setBusy(button, false, t('loginButton'));
-  }
-});
-
-document.getElementById('registerForm').addEventListener('submit', async event => {
-  event.preventDefault();
-
-  const form = event.currentTarget;
-  const button = document.getElementById('registerSubmit');
-  const username = form.elements.username.value.trim();
-  const email = form.elements.email.value.trim();
-  const password = form.elements.password.value;
-
-  if (!/^[a-zA-Z0-9_]{3,24}$/.test(username)) {
-    showToast(t('usernameError'));
-    return;
-  }
-
-  if (!email || email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    showToast(t('emailError'));
-    return;
-  }
-
-  if (password.length > 10) {
-    showToast(t('passwordError'));
-    return;
-  }
-
-  setBusy(button, true);
-
-  try {
-    const data = await api('/api/register', {
-      method: 'POST',
-      body: JSON.stringify({username, email, password})
-    });
-
-    currentUser = data.user || null;
-    form.reset();
-    updateAccountUI();
-    showPage('dashboard');
-    showToast(t('registerSuccess'));
-  } catch (error) {
-    showToast(error.message || t('requestError'));
-  } finally {
-    setBusy(button, false, t('registerButton'));
-  }
-});
-
-async function logout() {
-  const button = document.getElementById('logoutButton');
-  button.disabled = true;
-
-  try {
-    await api('/api/logout', {
-      method: 'POST',
-      body: JSON.stringify({})
-    });
-
-    currentUser = null;
-    updateAccountUI();
-    showPage('dashboard');
-    showToast(t('logoutSuccess'));
-  } catch (error) {
-    showToast(error.message || t('requestError'));
-  } finally {
-    button.disabled = false;
-  }
-}
-
-async function loadCurrentUser() {
-  try {
-    const data = await api('/api/me');
-    currentUser = data.user || null;
-  } catch (error) {
-    currentUser = null;
-  }
-
-  updateAccountUI();
-}
-
-document.getElementById('languageSelect').addEventListener('change', event => {
-  setLanguage(event.target.value);
-});
-
-renderPlatforms();
-setLanguage('en');
-loadCurrentUser();
-</script>
-</body>
-</html>
+const mainPlatforms = [
+  {name:'Facebook',icon:'📘',category:'social'},
+  {name:'Instagram
