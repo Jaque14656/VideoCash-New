@@ -1,0 +1,12 @@
+name = "videocash-new"
+main = "worker.js"
+compatibility_date = "2026-10-19"
+
+[assets]
+directory = "."
+binding = "ASSETS"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "videocash-new-db"
+database_id = "c5bc9f1a-e291-47f4-b8e6-fdfc2c0ce27a"
